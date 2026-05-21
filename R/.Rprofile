@@ -1,13 +1,37 @@
-local({
-  repos = c(
-    epiforecasts = 'https://epiforecasts.r-universe.dev',
-    CRAN = 'https://cloud.r-project.org')
-  options(repos = c(repos, getOption("repos")))
-})
+# Warn about partial matching
+options(
+  warnPartialMatchAttr = TRUE,
+  warnPartialMatchDollar = TRUE,
+  warnPartialMatchArgs = TRUE
+)
 
-if (interactive() &&
-    Sys.getenv("RSTUDIO") == "" &&
-    nzchar(Sys.getenv("VSCODE_PID"))) {
-  Sys.setenv(TERM_PROGRAM = "vscode")
-  source(file.path(Sys.getenv(if (.Platform$OS.type == "windows") "USERPROFILE" else "HOME"), ".vscode-R", "init.R"))
+# Load the usethis package if it's installed
+if (interactive()) {
+    require(usethis, quietly = TRUE)
 }
+
+if (interactive() && Sys.getenv("RSTUDIO") == "") {
+  source(
+    file.path(
+      Sys.getenv(
+        if (.Platform$OS.type == "windows")
+          "USERPROFILE" else
+            "HOME"
+      ),
+      ".vscode-R",
+      "init.R"
+    )
+  )
+}
+
+if (interactive() && Sys.getenv("TERM_PROGRAM") == "vscode") {
+  if ("httpgd" %in% .packages(all.available = TRUE)) {
+    options(vsc.plot = FALSE)
+    options(device = function(...) {
+      httpgd::hgd(silent = TRUE)
+      .vsc.browser(httpgd::hgd_url(history = FALSE), viewer = "Beside")
+    })
+  }
+}
+
+options(vsc.rstudioapi = TRUE)
