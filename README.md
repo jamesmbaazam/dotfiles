@@ -31,6 +31,7 @@ bash scripts/link.sh
 | `brew/` | Homebrew installation |
 | `claude/` | Claude Code config (submodule: [seabbs/claude](https://github.com/seabbs/claude)) |
 | `cli/` | CLI tools (gh, docker, claude-code, etc.) |
+| `fonts/` | System fonts (Fira Code) |
 | `gh/` | GitHub CLI and gh-dash configuration |
 | `git/` | Git config (delta, gitignore) |
 | `ghostty/` | Ghostty terminal configuration |
